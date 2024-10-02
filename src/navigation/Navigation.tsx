@@ -15,6 +15,7 @@ const Navigation:FC = () => {
          }}
         >
           <Stack.Screen name='SplashScreen' component={SplashScreen}/>
+          <Stack.Screen name='SplashScreen2' component={SplashScreen}/>
 
         </Stack.Navigator>
 
