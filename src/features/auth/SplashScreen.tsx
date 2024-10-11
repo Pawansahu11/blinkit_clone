@@ -3,7 +3,7 @@ import React, { FC, useEffect } from 'react'
 import { Colors } from '@utils/Constants'
 // import Logo from '@assets/images/amreetam.png'
 import Logo from '@assets/images/splash_logo.jpeg'
-import { screenHeight, screenWidth } from '@utils/Scalling'
+import { screenHeight, screenWidth } from '@utils/Scaling'
 
 import { useAuthStore } from '@state/authStore'
 import Geolocation from '@react-native-community/geolocation'
