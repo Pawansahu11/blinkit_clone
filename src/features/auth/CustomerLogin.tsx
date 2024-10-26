@@ -4,9 +4,13 @@ import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-g
 import CustomSafeAreaView from '@components/global/CustomSafeAreaView'
 import ProductSlider from '@components/login/ProductSlider'
 import { resetAndNavigate } from '@utils/NavigationUtils'
+import CustomText from '@components/ui/CustomText'
+import { Fonts } from '@utils/Constants'
+import CustomInput from '@components/ui/Custominput'
 
 const CustomerLogin: FC = () => {
-
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [loading, setLoading] = useState('')
     const [gestureSequence, setGestureSequence] = useState<string[]>([])
 
 
@@ -48,7 +52,26 @@ const CustomerLogin: FC = () => {
                         >
                             <View style={styles.content}>
                                 <Image source={require('@assets/images/logo.png')} style={styles.logo} />
+                                <CustomText variant='h2' fontFamily={Fonts.Bold}>
+                                    India's last minute app
+                                </CustomText>
+                                <CustomText variant='h5' fontFamily={Fonts.SemiBold} style={styles.text}>
+                                    India's last minute app
+                                </CustomText>
+                                <CustomInput
+                                    onChangeText={(text) => { setPhoneNumber(text.slice(0, 10)) }}
+                                    onClear={() => { setPhoneNumber('') }}
+                                    value={phoneNumber}
+                                    left={<CustomText
+                                        style={styles.phoneText}
+                                        variant='h6'
+                                        fontFamily={Fonts.SemiBold}
+                                    >
 
+                                    </CustomText>}
+                                    placeholder='Enter mobile number'
+                                    inputMode='numeric'
+                               />
 
                             </View>
                         </Animated.ScrollView>
@@ -74,16 +97,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        backgroundColor:'white',
-        paddingHorizontal:20,
-        paddingBottom:20
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
+        paddingBottom: 20
     },
     logo: {
         height: 50,
         width: 50,
         borderRadius: 20,
         marginVertical: 10
-    }
+    },
+    text: {
+        marginTop: 2,
+        marginBottom: 25,
+        opacity: 0.8
+    },
+    phoneText:{}
 
 })
 
