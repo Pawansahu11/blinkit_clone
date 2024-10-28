@@ -21,7 +21,7 @@ const CustomInput:
         ...props
     }) => {
         return (
-            <View>
+            <View style={styles.flexRow}>
                 {left}
                 <TextInput
                     {...props}

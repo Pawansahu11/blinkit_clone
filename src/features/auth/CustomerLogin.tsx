@@ -1,5 +1,5 @@
 import { View, StyleSheet, Animated, Image } from 'react-native'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
 import CustomSafeAreaView from '@components/global/CustomSafeAreaView'
 import ProductSlider from '@components/login/ProductSlider'
@@ -7,11 +7,36 @@ import { resetAndNavigate } from '@utils/NavigationUtils'
 import CustomText from '@components/ui/CustomText'
 import { Fonts } from '@utils/Constants'
 import CustomInput from '@components/ui/Custominput'
+import CustomButton from '@components/ui/CustomButton'
+import useKeyboardOffsetHight from '@utils/useKeyboardOffsetHeight'
 
 const CustomerLogin: FC = () => {
     const [phoneNumber, setPhoneNumber] = useState('')
-    const [loading, setLoading] = useState('')
+    const [loading, setLoading] = useState(false)
     const [gestureSequence, setGestureSequence] = useState<string[]>([])
+    const keyboardOffsetHight = useKeyboardOffsetHight()
+    const animatedValue = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {
+        if (keyboardOffsetHight == 0) {
+            Animated.timing(animatedValue, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true
+            }).start
+        } else {
+            Animated.timing(animatedValue, {
+                toValue: -keyboardOffsetHight * 0.84,
+                duration: 1000,
+                useNativeDriver: true
+            }).start
+
+        }
+    })
+
+    const handleAuth = async () => {
+
+    }
 
 
     const handleGesture = ({ nativeEvent }: any) => {
@@ -49,6 +74,7 @@ const CustomerLogin: FC = () => {
                             keyboardDismissMode='on-drag'
                             keyboardShouldPersistTaps='handled'
                             contentContainerStyle={styles.subContainer}
+                            style={{ transform: [{ translateY: animatedValue }] }}
                         >
                             <View style={styles.content}>
                                 <Image source={require('@assets/images/logo.png')} style={styles.logo} />
@@ -56,7 +82,7 @@ const CustomerLogin: FC = () => {
                                     India's last minute app
                                 </CustomText>
                                 <CustomText variant='h5' fontFamily={Fonts.SemiBold} style={styles.text}>
-                                    India's last minute app
+                                    Login in or sign up
                                 </CustomText>
                                 <CustomInput
                                     onChangeText={(text) => { setPhoneNumber(text.slice(0, 10)) }}
@@ -65,14 +91,17 @@ const CustomerLogin: FC = () => {
                                     left={<CustomText
                                         style={styles.phoneText}
                                         variant='h6'
-                                        fontFamily={Fonts.SemiBold}
-                                    >
-
+                                        fontFamily={Fonts.SemiBold}>
+                                        +91
                                     </CustomText>}
                                     placeholder='Enter mobile number'
                                     inputMode='numeric'
-                               />
-
+                                />
+                                <CustomButton
+                                    disabled={phoneNumber?.length != 10}
+                                    onPress={() => handleAuth()}
+                                    loading={loading}
+                                    title='Continue' />
                             </View>
                         </Animated.ScrollView>
                     </PanGestureHandler>
@@ -112,7 +141,9 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         opacity: 0.8
     },
-    phoneText:{}
+    phoneText: {
+        marginLeft: 10
+    }
 
 })
 
